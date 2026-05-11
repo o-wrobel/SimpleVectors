@@ -1,6 +1,6 @@
 .{
     .name = .simple_vectors,
-    .version = "4.0.0",
+    .version = "4.1.0",
     .fingerprint = 0xade537c4db9d972d,
     .minimum_zig_version = "0.16.0",
     .paths = .{

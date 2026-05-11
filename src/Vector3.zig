@@ -135,3 +135,7 @@ pub inline fn isNearZero(v: Vector3) bool {
     const s = 1e-8;
     return (@abs(v.x()) < s) and (@abs(v.y()) < s) and (@abs(v.z()) < s);
 }
+
+pub fn format(self: Vector3, writer: *std.Io.Writer) !void {
+    try writer.print("[{}, {}, {}]", .{ self.x(), self.y(), self.z() });
+}

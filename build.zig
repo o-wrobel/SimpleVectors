@@ -5,6 +5,9 @@ pub fn build(b: *std.Build) void {
     const vector3 = b.createModule(.{
 	    .root_source_file = b.path("src/Vector3.zig")
     });
+    const vector2 = b.createModule(.{
+	    .root_source_file = b.path("src/Vector2.zig")
+    });
 
     const mod = b.addModule("simplevectors", .{
         .root_source_file = b.path("src/root.zig"),
@@ -12,5 +15,6 @@ pub fn build(b: *std.Build) void {
     });
 
     mod.addImport("Vector3", vector3);
+    mod.addImport("Vector2", vector2);
 
 }

@@ -1,7 +1,7 @@
 .{
     .name = .simple_vectors,
     .version = "4.0.0",
-    .fingerprint = 0x882474d878041116,
+    .fingerprint = 0xade537c4db9d972d,
     .minimum_zig_version = "0.16.0",
     .paths = .{
         "build.zig",

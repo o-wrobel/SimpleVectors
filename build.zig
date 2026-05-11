@@ -1,20 +1,16 @@
 const std = @import("std");
 
 pub fn build(b: *std.Build) void {
-    const target = b.standardTargetOptions(.{});
-    const vector3 = b.createModule(.{
-	    .root_source_file = b.path("src/Vector3.zig")
-    });
-    const vector2 = b.createModule(.{
-	    .root_source_file = b.path("src/Vector2.zig")
-    });
-
-    const mod = b.addModule("simplevectors", .{
-        .root_source_file = b.path("src/root.zig"),
-        .target = target,
-    });
-
-    mod.addImport("Vector3", vector3);
-    mod.addImport("Vector2", vector2);
-
+	const target = b.standardTargetOptions(.{});
+	const optimize = b.standardOptimizeOption(.{});
+	_ = b.createModule(.{
+		.root_source_file = b.path("src/Vector3.zig"),
+		.target = target,
+		.optimize = optimize,
+	});
+	_ = b.createModule(.{
+		.root_source_file = b.path("src/Vector2.zig"),
+		.target = target,
+		.optimize = optimize,
+	});
 }

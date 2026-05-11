@@ -1,15 +1,14 @@
 const std = @import("std");
 const Vector3 = @This();
 
-// Type Definition
 data: @Vector(3, f32) = .{0, 0, 0},
 
-// Constructor
-pub inline fn init(xd: f32, yd: f32, zd: f32) Vector3 {
-    return .{ .data = .{xd, yd, zd}};
+pub inline fn init(x_: f32, y_: f32, z_: f32) Vector3 {
+    return .{ .data = .{x_, y_, z_}};
 }
 
-// Component Accessors
+// Component access
+
 pub inline fn x(self: Vector3) f32 {
     return self.data[0];
 }
@@ -22,7 +21,6 @@ pub inline fn z(self: Vector3) f32 {
     return self.data[2];
 }
 
-// Component Reference Accessors
 pub inline fn xRef(self: *Vector3) *f32 {
     return &self.data[0];
 }
@@ -35,35 +33,8 @@ pub inline fn zRef(self: *Vector3) *f32 {
     return &self.data[2];
 }
 
-// Color Aliases
-pub const r = x;
-pub const g = y;
-pub const b = z;
+// Arithmetic
 
-// Negation
-pub inline fn neg(self: Vector3) Vector3 {
-    return .{.data = -self.data};
-}
-
-// Magnitude
-pub inline fn lengthSquared(self: Vector3) f32 {
-    return (
-        self.data[0] * self.data[0] +
-        self.data[1] * self.data[1] +
-        self.data[2] * self.data[2]
-    );
-}
-
-pub fn length(self: Vector3) f32 {
-    return @sqrt(lengthSquared(self));
-}
-
-// Normalization
-pub fn norm(v: Vector3) Vector3 {
-    return v.scale(1 / v.length());
-}
-
-// Vector Arithmetic
 pub inline fn add(v1: Vector3, v2: Vector3) Vector3 {
     return .{ .data = v1.data + v2.data };
 }
@@ -80,7 +51,30 @@ pub inline fn scale(v: Vector3, s: f32) Vector3 {
     return .{ .data = v.data * @as(@Vector(3, f32), @splat(s)) };
 }
 
-// Dot and Cross Products
+// Self operations
+
+pub inline fn neg(self: Vector3) Vector3 {
+    return .{.data = -self.data};
+}
+
+pub fn norm(self: Vector3) Vector3 {
+    return self.scale(1 / self.length());
+}
+
+pub inline fn lengthSquared(self: Vector3) f32 {
+    return (
+        self.data[0] * self.data[0] +
+        self.data[1] * self.data[1] +
+        self.data[2] * self.data[2]
+    );
+}
+
+pub fn length(self: Vector3) f32 {
+    return @sqrt(lengthSquared(self));
+}
+
+// Vector-Vector operations
+
 pub inline fn dot(v1: Vector3, v2: Vector3) f32 {
     const res: f32 = @reduce(.Add, v1.data * v2.data);
     return res;
@@ -93,7 +87,6 @@ pub fn cross(v1: Vector3, v2: Vector3) Vector3 {
     return .init(xp, yp, zp);
 }
 
-// Reflection
 pub fn reflect(v1: Vector3, v2: Vector3) Vector3 {
     return .sub(
         v1,
@@ -102,6 +95,7 @@ pub fn reflect(v1: Vector3, v2: Vector3) Vector3 {
 }
 
 // Random Generation
+
 pub fn randomUnitVec(random: std.Random) Vector3 {
     var p: Vector3 = .init(1, 1, 1);
     while (p.lengthSquared() >= 1 or p.lengthSquared() < 1e-160) {
@@ -132,6 +126,11 @@ pub fn randomOnHemisphere(normal: Vector3, random: std.Random) Vector3 {
 }
 
 // Utility
+
+pub const r = x;
+pub const g = y;
+pub const b = z;
+
 pub inline fn isNearZero(v: Vector3) bool {
     const s = 1e-8;
     return (@abs(v.x()) < s) and (@abs(v.y()) < s) and (@abs(v.z()) < s);

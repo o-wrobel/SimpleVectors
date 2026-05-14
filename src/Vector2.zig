@@ -115,6 +115,35 @@ pub inline fn clamp(a: Vector2, min: Vector2, max: Vector2) Vector2 {
 
 // Utility
 
+/// Converts a vector to a Vector2, using tuple fields or named struct fields
+inline fn toVector2(vector: anytype) Vector2 {
+	const T = @TypeOf(vector);
+	switch (@typeInfo(T)) {
+		.@"struct" => |s| {
+			if (s.is_tuple) {
+				if (s.fields.len < 2)
+					@compileError("Tuple needs at least 2 fields to convert to Vector2, got: " ++ @typeName(T));
+
+				return .init(
+					@as(f32, @floatCast(vector[0])),
+					@as(f32, @floatCast(vector[1])),
+				);
+			}
+			// Named struct — require .x and .y
+			if (!@hasField(T, "x"))
+				@compileError("Struct missing field 'x' for Vector2 conversion: " ++ @typeName(T));
+
+			if (!@hasField(T, "y"))
+				@compileError("Struct missing field 'y' for Vector2 conversion: " ++ @typeName(T));
+			return .init(
+				@as(f32, @floatCast(vector.x)),
+				@as(f32, @floatCast(vector.y)),
+			);
+		},
+		else => @compileError("vector must be a struct with x/y fields or a tuple")
+	}
+}
+
 pub fn format(self: Vector2, writer: *std.Io.Writer) !void {
     try writer.print("[{}, {}]", .{ self.x(), self.y() });
 }

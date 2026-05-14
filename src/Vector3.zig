@@ -132,7 +132,7 @@ pub const g = y;
 pub const b = z;
 
 /// Converts a vector to a Vector3, using tuple fields or named struct fields
-inline fn initAny(vector: anytype) Vector3 {
+pub inline fn initAny(vector: anytype) Vector3 {
 	const T = @TypeOf(vector);
 	switch (@typeInfo(T)) {
 		.@"struct" => |s| {

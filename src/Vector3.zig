@@ -131,6 +131,41 @@ pub const r = x;
 pub const g = y;
 pub const b = z;
 
+/// Converts a vector to a Vector3, using tuple fields or named struct fields
+inline fn initAny(vector: anytype) Vector3 {
+	const T = @TypeOf(vector);
+	switch (@typeInfo(T)) {
+		.@"struct" => |s| {
+			if (s.is_tuple) {
+				if (s.fields.len < 3)
+					@compileError("Tuple needs at least 3 fields to convert to Vector3, got: " ++ @typeName(T));
+
+				return .init(
+					@as(f32, @floatCast(vector[0])),
+					@as(f32, @floatCast(vector[1])),
+					@as(f32, @floatCast(vector[2])),
+				);
+			}
+			// Named struct — require .x, .y and .z
+			if (!@hasField(T, "x"))
+				@compileError("Struct missing field 'x' for Vector3 conversion: " ++ @typeName(T));
+
+			if (!@hasField(T, "y"))
+				@compileError("Struct missing field 'y' for Vector3 conversion: " ++ @typeName(T));
+
+			if (!@hasField(T, "z"))
+				@compileError("Struct missing field 'z' for Vector3 conversion: " ++ @typeName(T));
+
+			return .init(
+				@as(f32, @floatCast(vector.x)),
+				@as(f32, @floatCast(vector.y)),
+				@as(f32, @floatCast(vector.z)),
+			);
+		},
+		else => @compileError("vector must be a struct with x, y and z fields or a tuple")
+	}
+}
+
 pub inline fn isNearZero(v: Vector3) bool {
     const s = 1e-8;
     return (@abs(v.x()) < s) and (@abs(v.y()) < s) and (@abs(v.z()) < s);

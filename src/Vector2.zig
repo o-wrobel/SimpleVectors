@@ -116,7 +116,7 @@ pub inline fn clamp(a: Vector2, min: Vector2, max: Vector2) Vector2 {
 // Utility
 
 /// Converts a vector to a Vector2, using tuple fields or named struct fields
-inline fn toVector2(vector: anytype) Vector2 {
+inline fn initAny(vector: anytype) Vector2 {
 	const T = @TypeOf(vector);
 	switch (@typeInfo(T)) {
 		.@"struct" => |s| {

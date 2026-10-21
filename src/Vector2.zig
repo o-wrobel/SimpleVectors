@@ -15,12 +15,21 @@ pub inline fn y(a: Vector2) f32 {
 }
 
 pub inline fn xRef(a: *Vector2) *f32 {
-    return &a.data[0];
+    return &@as(*[2]f32, @ptrCast(&a.data))[0];
+} test xRef {
+    var vec = Vector2{ .data = .{0, 0}};
+    const ref = vec.xRef();
+    try std.testing.expect(ref.* == 0);
 }
 
 pub inline fn yRef(a: *Vector2) *f32 {
-    return &a.data[1];
+    return &@as(*[2]f32, @ptrCast(&a.data))[1];
+} test yRef {
+    var vec = Vector2{ .data = .{0, 1}};
+    const ref = vec.yRef();
+    try std.testing.expect(ref.* == 1);
 }
+
 
 // Construction
 
@@ -148,4 +157,6 @@ pub fn format(self: Vector2, writer: *std.Io.Writer) !void {
     try writer.print("[{}, {}]", .{ self.x(), self.y() });
 }
 
-test Vector2 { std.testing.refAllDecls(Vector2); }
+test Vector2 {
+    std.testing.refAllDecls(Vector2);
+}

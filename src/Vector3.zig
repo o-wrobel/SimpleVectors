@@ -22,15 +22,15 @@ pub inline fn z(self: Vector3) f32 {
 }
 
 pub inline fn xRef(self: *Vector3) *f32 {
-    return &self.data[0];
+    return &@as(*[3]f32, @ptrCast(&self.data))[0];
 }
 
 pub inline fn yRef(self: *Vector3) *f32 {
-    return &self.data[1];
+    return &@as(*[3]f32, @ptrCast(&self.data))[1];
 }
 
 pub inline fn zRef(self: *Vector3) *f32 {
-    return &self.data[2];
+    return &@as(*[3]f32, @ptrCast(&self.data))[2];
 }
 
 // Arithmetic

@@ -174,3 +174,5 @@ pub inline fn isNearZero(v: Vector3) bool {
 pub fn format(self: Vector3, writer: *std.Io.Writer) !void {
     try writer.print("[{}, {}, {}]", .{ self.x(), self.y(), self.z() });
 }
+
+test Vector3 { std.testing.refAllDecls(Vector3); }

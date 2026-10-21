@@ -11,7 +11,7 @@
   in {
     devShells.${system}.default = pkgs.mkShell {
       packages = with pkgs; [
-        zig_0_16
+        zig
         zigscient
       ];
     };

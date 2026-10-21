@@ -147,3 +147,5 @@ pub inline fn initAny(vector: anytype) Vector2 {
 pub fn format(self: Vector2, writer: *std.Io.Writer) !void {
     try writer.print("[{}, {}]", .{ self.x(), self.y() });
 }
+
+test Vector2 { std.testing.refAllDecls(Vector2); }
